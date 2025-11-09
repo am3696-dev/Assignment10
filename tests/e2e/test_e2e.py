@@ -25,49 +25,46 @@ def test_calculator_add(page, fastapi_server):
     """
     Test the addition functionality of the calculator.
 
-    This test simulates a user performing an addition operation using the calculator
-    on the frontend. It fills in two numbers, clicks the "Add" button, and verifies
-    that the result displayed is correct.
+    Fills in two numbers, clicks the "Add" button, and verifies the displayed result.
+    Waits for the result to appear to avoid timing issues.
     """
-    # Navigate the browser to the homepage URL of the FastAPI application.
     page.goto('http://localhost:8000')
-    
-    # Fill in the first number input field (with id 'a') with the value '10'.
+
+    # Fill the input fields
     page.fill('#a', '10')
-    
-    # Fill in the second number input field (with id 'b') with the value '5'.
     page.fill('#b', '5')
-    
-    # Click the button that has the exact text "Add". This triggers the addition operation.
+
+    # Click "Add"
     page.click('button:text("Add")')
-    
-    # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 15".
-    # This verifies that the addition operation was performed correctly and the result is displayed as expected.
-    assert page.inner_text('#result') == 'Result: 15'
+
+    # Wait for the result div to contain text
+    page.wait_for_selector('#result')
+
+    # Check the result
+    result_text = page.inner_text('#result').strip()
+    assert result_text == 'Result: 15', f"Expected 'Result: 15', got '{result_text}'"
+
 
 @pytest.mark.e2e
 def test_calculator_divide_by_zero(page, fastapi_server):
     """
     Test the divide by zero functionality of the calculator.
 
-    This test simulates a user attempting to divide a number by zero using the calculator.
-    It fills in the numbers, clicks the "Divide" button, and verifies that the appropriate
-    error message is displayed. This ensures that the application correctly handles invalid
-    operations and provides meaningful feedback to the user.
+    Waits for the result div to ensure the error message is rendered.
     """
-    # Navigate the browser to the homepage URL of the FastAPI application.
     page.goto('http://localhost:8000')
-    
-    # Fill in the first number input field (with id 'a') with the value '10'.
+
     page.fill('#a', '10')
-    
-    # Fill in the second number input field (with id 'b') with the value '0', attempting to divide by zero.
     page.fill('#b', '0')
-    
-    # Click the button that has the exact text "Divide". This triggers the division operation.
+
     page.click('button:text("Divide")')
+
+    # Wait for the result element to appear
+    page.wait_for_selector('#result')
+
+    # Get the result text and strip whitespace
+    result_text = page.inner_text('#result').strip()
     
-    # Use an assertion to check that the text within the result div (with id 'result') is exactly
-    # "Error: Cannot divide by zero!". This verifies that the application handles division by zero
-    # gracefully and displays the correct error message to the user.
-    assert page.inner_text('#result') == 'Error: Cannot divide by zero!'
+    # Assert the correct error message
+    assert result_text == 'Error: Cannot divide by zero!', f"Expected 'Error: Cannot divide by zero!', got '{result_text}'"
+
