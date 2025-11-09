@@ -36,3 +36,8 @@ typing_extensions==4.12.2
 urllib3==2.2.3
 uvicorn
 Faker==30.0.0
+SQLAlchemy==2.0.23
+python-dotenv
+psycopg2-binary
+passlib[bcrypt]
+python-jose
