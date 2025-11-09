@@ -1,4 +1,4 @@
-# Assignment 10: Secure FastAPI User API
+# Assignment 10: Assignment-Secure User Model, Pydantic Validation, Database Testing, and Docker Deployment
 
 ![GitHub Actions CI/CD](https://github.com/am3696-dev/Assignment10/actions/workflows/main.yml/badge.svg)
 
